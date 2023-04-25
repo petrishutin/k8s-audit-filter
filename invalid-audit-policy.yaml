@@ -1,0 +1,10 @@
+rules:
+  # Include line in the audit log which contains verb "get" and have level "Metadata"
+  - level: Metadata
+    verbs:
+      - "get"
+
+  # Exclude line in the audit log which contains verb "create"
+  - level: None
+    verbs:
+      - "create"

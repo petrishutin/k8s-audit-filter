@@ -1,0 +1,36 @@
+apiVersion: audit.k8s.io/v1 # This is required.
+
+kind: Policy
+# Don't generate audit events for all requests in RequestReceived stage.
+
+rules:
+  # Include line in the audit log which contains verb "get" and have level "Metadata"
+  - level: Metadata
+    verbs:
+      - "get"
+
+  # Exclude line in the audit log which contains verb "create"
+  - level: None
+    verbs:
+      - "create"
+
+  - level: Request
+    users:
+      - "admin"
+
+  - level: Request
+    userGroups:
+      - "system:admins"
+
+  - level: Request
+    namespaces:
+      - "kube-system"
+
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["deployments"]
+        resourceNames: ["pods"]
+      - group: "apps"
+        resources: ["leases"]
+        resourceNames: ["test"]

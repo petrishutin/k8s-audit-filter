@@ -1,0 +1,10 @@
+black
+isort
+flake8
+flake8-print
+Flake8-pyproject
+mypy
+pytest
+coverage
+types-PyYAML
+hatch

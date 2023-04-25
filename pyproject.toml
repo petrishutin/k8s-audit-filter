@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "k8s-audit-filter"
+authors = [
+    { name = "Petr Ishutinr", email = "ishutinpetrdev@gmail.com" },
+]
+description = "A tool to filter k8s audit logs"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["k8s", "audit", "filter"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "Operating System :: OS Independent",
+]
+dependencies = ["pyyaml"]
+dynamic = ["version"]
+
+[tool.hatch.version]
+path = "k8s_audit_filter/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["k8s_audit_filter"]
+
+[project.urls]
+Homepage = "https://github.com/petrishutin/k8s-audit-filter"
+Tracker = "https://github.com/petrishutin/k8s-audit-filter/issues"
+
+[tool.flake8]
+max-line-length = 120
+extend-ignore = ["E203"]
+exclude = ["venv"]
+
+[tool.isort]
+line_length = 120
+
+[tool.black]
+line-length = 120
+
+[tool.mypy]
+exclude = ["venv"]
