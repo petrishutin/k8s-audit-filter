@@ -62,8 +62,8 @@ def handler(event, context):
         object_key = 'AUDIT/' + os.environ.get('CLUSTER_ID') + '/' + datetime.now().strftime(
             '%Y-%m-%d-%H:%M:%S') + '-' + get_random_alphanumeric_string(5)
         object_value = '\n'.join(filtered_log)  # prepare data to load
-        client.put_object(Bucket=bucket_name, Key=object_key, Body=object_value,
-                          StorageClass='COLD')  # load data to cloud storage
+        # load data to cloud storage
+        client.put_object(Bucket=bucket_name, Key=object_key, Body=object_value, StorageClass='COLD')
 ```
 
 Also you can update your policy dinamically, just use ```add_rule``` and ```remove_rule``` method:

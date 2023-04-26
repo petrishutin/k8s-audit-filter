@@ -16,7 +16,7 @@ class ResourceGroupSubField(Field):
         return False
 
 
-class ResourceResourseSubField(Field):
+class ResourceResourceSubField(Field):
     def __init__(self, value: List[str]):
         self.name = "resources"
         self.value: List[str] = value
@@ -43,7 +43,7 @@ class ResourceNamesSubField(Field):
 class ResourcesFieldsFactory(Factory):
     mapping = {
         "group": ResourceGroupSubField,
-        "resources": ResourceResourseSubField,
+        "resources": ResourceResourceSubField,
         "resourceNames": ResourceNamesSubField,
     }
 

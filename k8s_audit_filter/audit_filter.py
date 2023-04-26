@@ -1,9 +1,12 @@
+import logging
 from typing import Union
 
 import yaml
 
 from .abstract_classes import Rule
 from .rules import RuleFactory
+
+logger = logging.getLogger(__name__)
 
 
 class AuditFilterException(Exception):
@@ -36,8 +39,15 @@ class AuditFilter:
         if not self.rules:
             return True  # no rules, no filter
         for rule in self.rules:
-            if rule.check_rule(log_line):
-                return True
+            try:
+                if rule.check_rule(log_line):
+                    return True
+            except Exception as e:
+                logger.error(
+                    f"Exception: {e}, Type: {e.__class__.__qualname__} "
+                    f"Traceback: {e.__traceback__} Rule: {rule} with log line: {log_line}"
+                )
+                return True  # if rule check fails, we assume it should not be filtered
         return False
 
     def add_rule(self, rule: dict):
