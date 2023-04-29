@@ -44,6 +44,16 @@ include_rules_data = [
         {"level": "Request", "objectRef": {"apiGroup": "apps", "resource": "deployments", "name": "app"}},
         False,
     ],
+    [
+        {"level": "Request", "codes": [200]},
+        {"level": "Request", "responseStatus": {"code": 200}},
+        True,
+    ],
+    [
+        {"level": "Request", "codes": [200]},
+        {"level": "Request", "responseStatus": {"code": 500}},
+        False,
+    ],
 ]
 
 

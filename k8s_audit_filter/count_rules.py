@@ -30,11 +30,17 @@ class GroupCountRule(CountRule):
         return instance["user"]["groups"]
 
 
+class CodesCountRule(CountRule):
+    def get(self, instance: dict):
+        return [instance["responseStatus"]["code"]]
+
+
 class CountRuleFactory(Factory):
     mapping = {
         "level": LevelCountRule,
         "users": UserCountRule,
         "groups": GroupCountRule,
+        "codes": CodesCountRule,
     }
 
     @classmethod

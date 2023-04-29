@@ -1,8 +1,9 @@
 import logging
+from copy import deepcopy
 
 import yaml
 
-from .rules import RuleFactory
+from k8s_audit_filter.rules import RuleFactory
 
 from typing import Any, List, Union  # noqa isort:skip
 
@@ -34,11 +35,11 @@ class AuditFilter:
                 if rule.check_rule(log_line):
                     return True
             except Exception as e:
-                logger.error(
+                logger.warning(
                     f"Exception: {e}, Type: {e.__class__.__qualname__} "
                     f"Traceback: {e.__traceback__} Rule: {rule} with log line: {log_line}"
                 )
-                return True  # if rule check fails, we assume it should not be filtered
+                raise e  # if rule check fails, we assume it should not be filtered
         return False
 
     def add_rule(self, rule: dict):
@@ -59,9 +60,14 @@ class AuditFilter:
         for rule in rules:
             self.remove_rule(rule)
 
-    def dump_config(self, path_to_config):
+    def dump_config(self, path_to_config, k8s_standard: bool = True):
+        config = deepcopy(self.config)
+        if k8s_standard:
+            for rule in config["rules"]:
+                if "codes" in rule:  # there is no codes field in k8s standard
+                    del rule["codes"]  # type: ignore
         with open(path_to_config, "w") as f:
-            yaml.dump(self.config, f)
+            yaml.dump(config, f, indent=4)
 
     @staticmethod
     def filter_with_rule(log_line: dict, rule: dict) -> bool:

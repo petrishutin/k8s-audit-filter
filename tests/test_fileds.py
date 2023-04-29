@@ -9,6 +9,7 @@ from k8s_audit_filter.fields import (  # noqa isort:skip
     UsersField,
     VerbsField,
     ResourceField,
+    CodesField,
 )
 
 
@@ -47,6 +48,16 @@ from k8s_audit_filter.fields import (  # noqa isort:skip
             ResourceField([{"group": "apps", "resources": ["leases"], "resourceNames": ["test"]}]),
             {"objectRef": {"resource": "leases", "apiGroup": "apps", "name": "test"}},
             True,
+        ),
+        (
+            CodesField(["200"]),
+            {"responseStatus": {"code": "200"}},
+            True,
+        ),
+        (
+            CodesField(["200"]),
+            {"responseStatus": {"code": "201"}},
+            False,
         ),
     ],
 )

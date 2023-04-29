@@ -1,4 +1,7 @@
+import os
+
 import pytest
+import yaml
 
 from k8s_audit_filter.audit_filter import AuditFilter, AuditFilterException
 
@@ -60,6 +63,14 @@ def test_audit_filter_with_invalid_instance():
             {"level": "RequestResponse", "objectRef": {"resource": "leases", "apiGroup": "apps", "name": "test1"}},
             False,
         ),
+        (
+            {"level": "RequestResponse", "responseStatus": {"code": 200}},
+            True,
+        ),
+        (
+            {"level": "RequestResponse", "responseStatus": {"code": 201}},
+            False,
+        ),
     ],
 )
 def test_audit_filter_load_config_from_yaml(data, result):
@@ -85,3 +96,20 @@ def test_audit_filter_add_and_remove_rules():
 def test_audit_filter_with_rule():
     assert AuditFilter.filter_with_rule({"level": "Request", "verb": "get"}, {"level": "Request"}) is True
     assert AuditFilter.filter_with_rule({"level": "Request", "verb": "get"}, {"level": "Metadata"}) is False
+
+
+def test_audit_filter_dump_config():
+    filter_audit = AuditFilter()
+    filter_audit.add_rule({"level": "Request"})
+    filter_audit.add_rule({"level": "Metadata", "codes": [200, 201]})
+    filter_audit.dump_config("test.yaml")
+    assert os.path.exists("test.yaml")
+    with open("test.yaml") as f:
+        file = yaml.safe_load(f)
+    assert file["rules"] == [{"level": "Request"}, {"level": "Metadata"}]
+    os.remove("test.yaml")
+    filter_audit.dump_config("test1.yaml", k8s_standard=False)
+    with open("test1.yaml") as f:
+        file = yaml.safe_load(f)
+    assert file["rules"] == [{"level": "Request"}, {"level": "Metadata", "codes": [200, 201]}]
+    os.remove("test1.yaml")

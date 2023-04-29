@@ -64,6 +64,18 @@ class NamespacesField(Field):
         return False
 
 
+class CodesField(Field):
+    def __init__(self, value: List[str]):
+        self.name = "codes"
+        self.value: List[str] = value
+
+    def check_match(self, target: dict) -> bool:
+        for code in self.value:
+            if target.get("responseStatus") and target["responseStatus"].get("code") == code:
+                return True
+        return False
+
+
 class FieldFactory(Factory):
     mapping = {
         "level": LevelField,
@@ -72,6 +84,7 @@ class FieldFactory(Factory):
         "userGroups": UserGroupsField,
         "namespaces": NamespacesField,
         "resources": ResourceField,
+        "codes": CodesField,
     }
 
     @classmethod

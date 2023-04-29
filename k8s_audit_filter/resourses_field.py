@@ -11,7 +11,7 @@ class ResourceGroupSubField(Field):
     def check_match(self, target: dict) -> bool:
         if not self.value:
             return True
-        if target["objectRef"].get("apiGroup") and target["objectRef"]["apiGroup"] == self.value:
+        if target.get("objectRef") and target["objectRef"].get("apiGroup") == self.value:
             return True
         return False
 
@@ -23,7 +23,7 @@ class ResourceResourceSubField(Field):
 
     def check_match(self, target: dict) -> bool:
         for resource in self.value:
-            if target["objectRef"].get("resource") and target["objectRef"]["resource"] == resource:
+            if target.get("objectRef") and target["objectRef"].get("resource") == resource:
                 return True
         return False
 
@@ -35,7 +35,7 @@ class ResourceNamesSubField(Field):
 
     def check_match(self, target: dict) -> bool:
         for name in self.value:
-            if target["objectRef"].get("name") and target["objectRef"]["name"] == name:
+            if target.get("objectRef") and target["objectRef"].get("name") == name:
                 return True
         return False
 

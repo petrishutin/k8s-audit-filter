@@ -34,3 +34,6 @@ rules:
       - group: "apps"
         resources: ["leases"]
         resourceNames: ["test"]
+
+  - level: RequestResponse
+    codes: [200]
