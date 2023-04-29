@@ -1,10 +1,13 @@
 import logging
-from typing import Union, List, Any
 
 import yaml
 
-from .abstract_classes import Rule, Factory
 from .rules import RuleFactory
+
+from typing import Any, List, Union  # noqa isort:skip
+
+
+from .abstract_classes import Factory, Rule  # noqa isort:skip
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +44,7 @@ class AuditFilter:
     def add_rule(self, rule: dict):
         internal_rule = RuleFactory.create(rule)
         self.rules.append(internal_rule)
-        self.config['rules'].append(internal_rule.as_dict)  # type: ignore
+        self.config["rules"].append(internal_rule.as_dict)  # type: ignore
 
     def add_rules(self, rules: list):
         for rule in rules:
@@ -50,7 +53,7 @@ class AuditFilter:
     def remove_rule(self, rule: dict):
         internal_rule = RuleFactory.create(rule)
         self.rules.remove(internal_rule)
-        self.config['rules'].remove(internal_rule.as_dict)  # type: ignore
+        self.config["rules"].remove(internal_rule.as_dict)  # type: ignore
 
     def remove_rules(self, rules: list):
         for rule in rules:
@@ -72,9 +75,7 @@ def from_yaml(config: str) -> List[Rule]:
     with open(config) as f:
         policy = yaml.safe_load(f)
     if "apiVersion" not in policy or policy["apiVersion"] != "audit.k8s.io/v1":
-        raise AuditFilterException(
-            "Invalid policy, missing version or version does not match 'audit.k8s.io/v1'"
-        )
+        raise AuditFilterException("Invalid policy, missing version or version does not match 'audit.k8s.io/v1'")
     if "kind" not in policy or policy["kind"] != "Policy":
         raise AuditFilterException("Invalid policy, missing kind or kind does not match 'Policy'")
     return [RuleFactory.create(rule) for rule in policy["rules"]]

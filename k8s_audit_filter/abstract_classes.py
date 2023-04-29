@@ -1,5 +1,6 @@
 from abc import ABC
-from typing import List, Union, Any
+
+from typing import Any, List, Union  # noqa isort:skip
 
 
 class Field(ABC):
