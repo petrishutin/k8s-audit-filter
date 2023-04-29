@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import List, Union
+from typing import List, Union, Any
 
 
 class Field(ABC):
@@ -46,5 +46,5 @@ class Factory(ABC):
     mapping: dict = {}
 
     @classmethod
-    def create(cls, entity: dict):
+    def create(cls, entity: Any):
         raise NotImplementedError
