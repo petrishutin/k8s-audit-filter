@@ -75,9 +75,9 @@ class FieldFactory(Factory):
     }
 
     @classmethod
-    def create(cls, entities: dict):
+    def create(cls, entity: dict):
         result = []
-        for key, vale in entities.items():
+        for key, vale in entity.items():
             if key in cls.mapping:
                 result.append(cls.mapping[key](vale))
                 continue

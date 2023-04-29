@@ -97,9 +97,9 @@ class PolicyFactory(Factory):
     }
 
     @classmethod
-    def create(cls, entities: Any):
-        if type(entities) in cls.mapping:
-            return cls.mapping[type(entities)](entities)
-        if entities is None:
-            return cls.mapping[None](entities)
-        raise AuditFilterException(f"Invalid config type {type(entities)}")
+    def create(cls, entity: Any):
+        if type(entity) in cls.mapping:
+            return cls.mapping[type(entity)](entity)
+        if entity is None:
+            return cls.mapping[None](entity)
+        raise AuditFilterException(f"Invalid config type {type(entity)}")

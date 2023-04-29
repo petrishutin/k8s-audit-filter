@@ -48,9 +48,9 @@ class ResourcesFieldsFactory(Factory):
     }
 
     @classmethod
-    def create(cls, entities: dict):
+    def create(cls, entity: dict):
         fields = []
-        for key, value in entities.items():
+        for key, value in entity.items():
             if key in cls.mapping:
                 fields.append(cls.mapping[key](value))
                 continue
